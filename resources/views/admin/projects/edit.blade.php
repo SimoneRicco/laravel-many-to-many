@@ -61,6 +61,24 @@
         </div>
 
         <div class="mb-3">
+            <h3>Technologies</h3>
+            @foreach($technologies as $t)
+                <div class="mb-3 form-check">
+                    <input
+                        type="checkbox"
+                        class="form-check-input"
+                        id="t{{ $t->id }}"
+                        name="technologies[]"
+                        value="{{ $t->id }}"
+                        @if (in_array($t->id, old('technologies', $project->technologies->pluck('id')->all()))) checked @endif
+                    >
+                    <label class="form-check-label" for="t{{ $t->id }}">{{ $t->name }}</label>
+                </div>
+            @endforeach
+        </div>
+
+
+        <div class="mb-3">
             <label for="content" class="form-label">Content</label>
             <textarea
                 class="form-control @error('content') is-invalid @enderror"

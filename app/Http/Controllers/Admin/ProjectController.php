@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Project;
+use App\Models\Technology;
 use Illuminate\Http\Request;
 use App\Models\Type;
 
@@ -19,6 +20,8 @@ class ProjectController extends Controller
         'url_image' => 'required|url|max:200',
         'content'   => 'required|string',
         'type_id'   => 'required|integer|exists:types,id',
+        'technologies'          => 'nullable|array',
+        'technologies.*'        => 'integer|exists:technologies,id',
     ];
 
     private $validation_messages = [
@@ -43,7 +46,8 @@ class ProjectController extends Controller
     public function create()
     {
         $types = Type::all();
-        return view("admin.projects.create", compact('types'));
+        $technology = Technology::all();
+        return view("admin.projects.create", compact('types', 'technology'));
     }
 
     /**
@@ -66,6 +70,8 @@ class ProjectController extends Controller
         $newProject->url_image = $data['url_image'];
         $newProject->content   = $data['content'];
         $newProject->save();
+
+        $newProject->technologies()->sync($data['technology'] ?? []);
 
         // ridirezionare su una rotta di tipo get
         return to_route('admin.projects.show', ['project' => $newProject]);
@@ -91,7 +97,8 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         $types = Type::all();
-        return view('admin.projects.edit', compact('project', 'types'));
+        $technologies = Technology::all();
+        return view('admin.projects.edit', compact('project', 'types', 'technologies'));
     }
 
     /**
@@ -115,6 +122,7 @@ class ProjectController extends Controller
         $project->content   = $data['content'];
         $project->update();
 
+        $project->technologies()->sync($data['technologies'] ?? []);
         // ridirezionare su una rotta di tipo get
         return to_route('admin.projects.show', compact('project'));
         //['project' => $project]
@@ -128,6 +136,8 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
+        $project->technologies()->detach();
+
         $project->delete();
 
         return to_route('admin.projects.index')->with('delete_success', $project);
