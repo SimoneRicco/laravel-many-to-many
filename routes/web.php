@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Guests\GuestsPageController;
 use App\Http\Controllers\Admin\AdminPageController;
 use App\Http\Controllers\Admin\ProjectController;
+use App\Http\Controllers\Admin\TechnologyController;
+use App\Http\Controllers\Admin\TypeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +27,8 @@ Route::middleware(['auth', 'verified'])
     ->group(function () {
         Route::get('/', [AdminPageController::class, 'dashboard'])->name('dashboard');
         Route::resource('projects', ProjectController::class);
+        Route::resource('types', TypeController::class);
+        Route::resource('technologies', TechnologyController::class);
     });
 
 Route::middleware('auth')

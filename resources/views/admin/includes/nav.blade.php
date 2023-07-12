@@ -20,11 +20,25 @@
                         <li><a class="dropdown-item" href="{{ route('admin.projects.create') }}">Add</a></li>
                     </ul>
                 </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Types
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{{ route('admin.types.index') }}">Index</a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin.types.create') }}">Add</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Technologies
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{{ route('admin.technologies.index') }}">Index</a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin.technologies.create') }}">Add</a></li>
+                    </ul>
+                </li>
             </ul>
-            {{-- <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form> --}}
         </div>
     </div>
 </nav>
