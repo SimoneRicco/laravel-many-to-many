@@ -4,9 +4,9 @@
     <h1>Types</h1>
 
     @if (session('delete_success'))
-        @php $types = session('delete_success') @endphp
+        @php $type = session('delete_success') @endphp
         <div class="alert alert-danger">
-            The category "{{ $types->name }}" has been deleted
+            The category "{{ $type->name }}" has been deleted
         </div>
     @endif
 
@@ -19,6 +19,7 @@
             </tr>
         </thead>
         <tbody>
+            {{-- @dd($types) --}}
             @foreach ($types as $type)
                 <tr>
                     <th scope="row">{{ $type->id }}</th>

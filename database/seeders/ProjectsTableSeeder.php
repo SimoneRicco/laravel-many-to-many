@@ -19,9 +19,12 @@ class ProjectsTableSeeder extends Seeder
     {
         $technologies = Technology::all()->pluck('id');
         for ($i = 0; $i < 10; $i++) {
+            $title = $faker->words(rand(2, 10), true);  // Il mio titolo è questo
+            $slug = Project::slugger($title);         // il-mio-titolo-questo
 
             $projects = Project::create([
-                'title'     => $faker->words(rand(2, 10), true),
+                'slug' => $slug,
+                'title'     => $title,
                 'url_image' => 'https://picsum.photos/id/' . rand(1, 270) . '/500/400',
                 'content'   => $faker->paragraphs(rand(2, 20), true),
             ]);

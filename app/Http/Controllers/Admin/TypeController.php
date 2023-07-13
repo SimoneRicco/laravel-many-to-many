@@ -102,7 +102,16 @@ class TypeController extends Controller
      */
     public function destroy(Type $type)
     {
-        $type->delete();
-        return to_route('admin.types.index')->with('delete_success', $type);
+        if ($type->id != 1) {
+            foreach ($type->projects as $project) {
+                $project->type_id = 1;
+                $project->update();
+            }
+
+            $type->delete();
+            return to_route('admin.types.index')->with('delete_success', $type);
+        } else {
+            return to_route('admin.types.index')->with('delete_failed', $type);
+        }
     }
 }

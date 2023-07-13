@@ -6,10 +6,12 @@ use App\Models\Type;
 use App\Models\Technology;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\Slugger;
 
 class Project extends Model
 {
     use HasFactory;
+    use Slugger;
 
     public function type()
     {
@@ -19,5 +21,9 @@ class Project extends Model
     public function technologies()
     {
         return $this->belongsToMany(Technology::class);
+    }
+    public function getRouteKey()
+    {
+        return $this->slug;
     }
 }

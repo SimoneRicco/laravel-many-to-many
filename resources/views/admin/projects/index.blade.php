@@ -3,12 +3,12 @@
 @section('contents')
 
     <h1>Project</h1>
-    {{-- @if (session('delete_success'))
+    @if (session('delete_success'))
         @php $project = session('delete_success') @endphp
         <div class="alert alert-danger">
             Il post "{{ $project->title }}" è stato eliminato per sempre
         </div>
-    @endif --}}
+    @endif
 
     <table class="table table-striped">
         <thead>
@@ -21,25 +21,16 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($project as $prj)
+            @foreach ($projects as $project)
                 <tr>
-                    <th scope="row">{{ $prj->id }}</th>
-                    <td>{{ $prj->title }}</td>
-                    <td>{{ $prj->url_image }}</td>
-                    <td>{{ $prj->type->name }}</td>
+                    <th scope="row">{{ $project->id }}</th>
+                    <td>{{ $project->title }}</td>
+                    <td>{{ $project->url_image }}</td>
+                    <td>{{ $project->type->name }}</td>
                     <td>
-                        <a class="btn btn-primary" href="{{ route('admin.projects.show', ['project' => $prj->id]) }}">View</a>
-                        <a class="btn btn-warning" href="{{ route('admin.projects.edit', ['project' => $prj->id]) }}">Edit</a>
-                        {{-- <form
-                            action="{{ route('admin.projects.destroy', ['project' => $prj->id]) }}"
-                            method="post"
-                            class="d-inline-block"
-                        >
-                            @csrf
-                            @method('delete')
-                            <button class="btn btn-danger">Delete</button>
-                        </form> --}}
-                        <button type="button" class="btn btn-danger js-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="{{ $prj->id }}">
+                        <a class="btn btn-primary" href="{{ route('admin.projects.show', ['project' => $project]) }}">View</a>
+                        <a class="btn btn-warning" href="{{ route('admin.projects.edit', ['project' => $project]) }}">Edit</a>
+                        <button type="button" class="btn btn-danger js-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="{{ $project->slug}}">
                             Delete
                         </button>
                     </td>
@@ -75,6 +66,6 @@
             </div>
         </div>
     </div>
-    {{ $project->links() }}
+    {{ $projects->links() }}
 
 @endsection
