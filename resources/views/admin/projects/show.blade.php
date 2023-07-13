@@ -7,5 +7,9 @@
     <h3>Technologies: {{ implode(', ', $project->technologies->pluck('name')->all()) }}</h3>
     <img src="{{ $project->url_image }}" alt="{{ $project->title }}">
     <p>{{ $project->content }}</p>
+    @if ($project->image)
+    <p>Img from file:</p>
+    <img src="{{ asset('storage/' . $project->image) }}" alt="{{ $project->title }}">
+    @endif
 
 @endsection

@@ -3,7 +3,7 @@
 @section('contents')
 
     <h1>Edit project</h1>
-    <form method="POST" action="{{ route('admin.projects.update', ['project' => $project]) }}" novalidate>
+    <form method="POST" action="{{ route('admin.projects.update', ['project' => $project]) }}" novalidate enctype="multipart/form-data">
         @csrf
         @method('put')
 
@@ -17,6 +17,16 @@
                 value="{{ old('title', $project->title) }}"
             >
             @error('title')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+            @enderror
+        </div>
+
+        <div class="input-group mb-3">
+            <input type="file" class="form-control" id="image" name="image" accept="image/*">
+            <label class="input-group-text  @error('image') is-invalid @enderror" for="image">Upload</label>
+            @error('image')
                 <div class="invalid-feedback">
                     {{ $message }}
                 </div>

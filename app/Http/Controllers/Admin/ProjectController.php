@@ -7,6 +7,7 @@ use App\Models\Project;
 use App\Models\Technology;
 use Illuminate\Http\Request;
 use App\Models\Type;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
@@ -18,6 +19,7 @@ class ProjectController extends Controller
     private $validations = [
         'title'     => 'required|string|min:5|max:100',
         'url_image' => 'required|url|max:200',
+        'image'     => 'nullable|image|max:2048',
         'content'   => 'required|string',
         'type_id'   => 'required|integer|exists:types,id',
         'technologies'          => 'nullable|array',
@@ -63,12 +65,14 @@ class ProjectController extends Controller
 
         $data = $request->all();
 
+        $imagePath = Storage::put('uploads', $data['image']);
         // salvare i dati nel db se validi
         $newProject = new Project();
-        $newProject->slug     = Project::slugger($data['title']);
+        $newProject->slug      = Project::slugger($data['title']);
         $newProject->title     = $data['title'];
         $newProject->type_id   = $data['type_id'];
         $newProject->url_image = $data['url_image'];
+        $newProject->image     = $imagePath;
         $newProject->content   = $data['content'];
         $newProject->save();
 
@@ -119,6 +123,18 @@ class ProjectController extends Controller
 
         $data = $request->all();
 
+        if ($data['image']) {
+            // salvare l'immagine nuova
+            $imagePath = Storage::put('uploads', $data['image']);
+
+            // eliminare l'immagine vecchia
+            if ($project->image) {
+                Storage::delete($project->image);
+            }
+
+            // aggiormare il valore nella colonna con l'indirizzo dell'immagine nuova
+            $project->image = $imagePath;
+        }
         // aggiornare i dati nel db se validi
         $project->title     = $data['title'];
         $project->slug     = Project::slugger($data['title']);
@@ -143,7 +159,9 @@ class ProjectController extends Controller
     {
         $project = Project::where('slug', $slug)->firstOrFail();
         $project->technologies()->detach();
-
+        if ($project->image) {
+            Storage::delete($project->image);
+        }
         $project->delete();
 
         return to_route('admin.projects.index')->with('delete_success', $project);
