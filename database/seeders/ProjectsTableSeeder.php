@@ -18,7 +18,7 @@ class ProjectsTableSeeder extends Seeder
     public function run(Faker $faker)
     {
         $technologies = Technology::all()->pluck('id');
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 30; $i++) {
             $title = $faker->words(rand(2, 10), true);  // Il mio titolo è questo
             $slug = Project::slugger($title);         // il-mio-titolo-questo
 
